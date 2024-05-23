@@ -31,8 +31,10 @@ test('should render all the inputs and buttons', () => {
 
 // Write a test for the calculator component that verifies that 4/2 causes the result text to be Result: 2
 
-// Write a test that verifies that if you do multiple operations with different values only the final operations result is displayed.
+// Write a test that verifies that if you do multiple operations with different input values only the final operations result is displayed.
 
 // Write a test that verifies that the undo button is not present when no operations have been performed.
 
-// Write a test that does an addition operation, changes the input values, undoes the operation, and verifies the result is from the addition
+// Write a test that shows that the undo button is only displayed after at least one operation has been done.
+
+// Write a test that does an addition operation, changes the input two values, undoes the operation, and verifies the input fields are now from the addition.
