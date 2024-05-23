@@ -7,8 +7,6 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    include: [
-      '.tests/unit-tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
-    ],
+    include: ['**/tests/unit-tests/*.{test,spec}.?(c|m)[jt]s?(x)'],
   },
 });

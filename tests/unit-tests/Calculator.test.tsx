@@ -41,7 +41,7 @@ test('should calculate 1 + 1 = 2', () => {
   fireEvent.click(addButtonElement);
 
   // Verify the result
-  expect(resultElement).toBe(2);
+  expect(resultElement.textContent).toBe('Result: 2');
 });
 
 // Write a test for the calculator component that verifies that 1-1 equals 0
@@ -62,7 +62,7 @@ test('should calculate 1 - 1 = 0', () => {
   fireEvent.click(subtractButtonElement);
 
   // Verify the result
-  expect(resultElement).toBe(0);
+  expect(resultElement.textContent).toBe('Result: 0');
 });
 
 // Write a test for the calculator component that verifies that 2*2 equals 4
@@ -83,7 +83,7 @@ test('should calculate 2 * 2 = 4', () => {
   fireEvent.click(multiplyButtonElement);
 
   // Verify the result
-  expect(resultElement).toBe(4);
+  expect(resultElement.textContent).toBe('Result: 4');
 });
 
 // Write a test for the calculator component that verifies that 4/2 equals 2
@@ -104,47 +104,20 @@ test('should calculate 4 / 2 = 2', () => {
   fireEvent.click(divisionButtonElement);
 
   // Verify the result
-  expect(resultElement).toBe(2);
+  expect(resultElement.textContent).toBe('Result: 2');
 });
 
-// Write a test that verifies that the undo button works as expected with one addition operation
-test('should undo the last operation', () => {
+// Write a test that verifies that if you do multiple operations with different values only the final operations result is displayed.
+test('should display the result of the last operation', () => {
   render(<Calculator />);
 
   // Get the input and button elements
   const numberInputElement1 = screen.getByTestId('calculator-input-1');
   const numberInputElement2 = screen.getByTestId('calculator-input-2');
   const addButtonElement = screen.getByTestId('add-button');
-  const undoButtonElement = screen.getByTestId('undo-button');
-  const resultElement = screen.getByTestId('result');
-
-  // Set the input values
-  fireEvent.change(numberInputElement1, { target: { value: '1' } });
-  fireEvent.change(numberInputElement2, { target: { value: '1' } });
-
-  // Click the add button
-  fireEvent.click(addButtonElement);
-
-  // Verify the result
-  expect(resultElement).toBe(2);
-
-  // Click the undo button
-  fireEvent.click(undoButtonElement);
-
-  // Verify the result is empty
-  expect(resultElement).toBe('');
-});
-
-// Write a test that verifies that the undo button works as expected with multiple operations
-test('should undo the last operation', () => {
-  render(<Calculator />);
-
-  // Get the input and button elements
-  const numberInputElement1 = screen.getByTestId('calculator-input-1');
-  const numberInputElement2 = screen.getByTestId('calculator-input-2');
-  const addButtonElement = screen.getByTestId('add-button');
+  const subtractButtonElement = screen.getByTestId('subtract-button');
   const multiplyButtonElement = screen.getByTestId('multiply-button');
-  const undoButtonElement = screen.getByTestId('undo-button');
+  const divisionButtonElement = screen.getByTestId('division-button');
   const resultElement = screen.getByTestId('result');
 
   // Set the input values
@@ -155,17 +128,78 @@ test('should undo the last operation', () => {
   fireEvent.click(addButtonElement);
 
   // Verify the result
-  expect(resultElement).toBe(2);
+  expect(resultElement.textContent).toBe('Result: 2');
+
+  // Set the input values
+  fireEvent.change(numberInputElement1, { target: { value: '2' } });
+  fireEvent.change(numberInputElement2, { target: { value: '2' } });
+
+  // Click the subtract button
+  fireEvent.click(subtractButtonElement);
+
+  // Verify the result
+  expect(resultElement.textContent).toBe('Result: 0');
+
+  // Set the input values
+  fireEvent.change(numberInputElement1, { target: { value: '3' } });
+  fireEvent.change(numberInputElement2, { target: { value: '3' } });
 
   // Click the multiply button
   fireEvent.click(multiplyButtonElement);
 
   // Verify the result
-  expect(resultElement).toBe(1);
+  expect(resultElement.textContent).toBe('Result: 9');
+
+  // Set the input values
+  fireEvent.change(numberInputElement1, { target: { value: '4' } });
+  fireEvent.change(numberInputElement2, { target: { value: '2' } });
+
+  // Click the division button
+  fireEvent.click(divisionButtonElement);
+
+  // Verify the result
+  expect(resultElement.textContent).toBe('Result: 2');
+});
+
+// Write a test that verifies that the undo button is not present when no operations have been performed.
+test('should not render the undo button when no operations have been performed', () => {
+  render(<Calculator />);
+
+  // Get the undo button element
+  const undoButtonElement = screen.queryByTestId('undo-button');
+
+  // Verify the undo button is not present
+  expect(undoButtonElement).toBeNull();
+});
+
+// Write a test that does an addition operation, changes the input values, undoes the operation, and verifies the result is from the addition
+test('should undo the last operation', () => {
+  render(<Calculator />);
+
+  // Get the input and button elements
+  const numberInputElement1 = screen.getByTestId('calculator-input-1');
+  const numberInputElement2 = screen.getByTestId('calculator-input-2');
+  const addButtonElement = screen.getByTestId('add-button');
+  const resultElement = screen.getByTestId('result');
+
+  // Set the input values
+  fireEvent.change(numberInputElement1, { target: { value: '1' } });
+  fireEvent.change(numberInputElement2, { target: { value: '1' } });
+
+  // Click the add button
+  fireEvent.click(addButtonElement);
+  const undoButtonElement = screen.getByTestId('undo-button');
+
+  // Verify the result
+  expect(resultElement.textContent).toBe('Result: 2');
+
+  // Set the input values
+  fireEvent.change(numberInputElement1, { target: { value: '2' } });
+  fireEvent.change(numberInputElement2, { target: { value: '2' } });
 
   // Click the undo button
   fireEvent.click(undoButtonElement);
 
   // Verify the result
-  expect(resultElement).toBe(2);
+  expect(resultElement.textContent).toBe('Result: 2');
 });
